@@ -1,6 +1,6 @@
 var http = require("http");
 var fs = require("fs");
-var readFile = require("./modules/setType.js.js")
+var readFile = require("./modules/setType.js")
 var server = http.createServer((req, res) => {
     if (req.url == '/first') {
         var obj = { dirs: [], files: [] }
