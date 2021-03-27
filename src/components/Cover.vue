@@ -1,6 +1,11 @@
 <template>
   <div>
-    <img :src="imageUrl" :alt="cover" @click="getSongs(cover)" />
+    <img
+      v-if="cover != 'icons'"
+      :src="imageUrl"
+      :alt="cover"
+      @click="getSongs(cover)"
+    />
   </div>
 </template>
 <script>
@@ -14,7 +19,7 @@ export default {
 
   methods: {
     getSongs(cover) {
-      this.$store.commit("getSongs", cover);
+      this.$store.commit("SET_COVER", cover);
       this.$store.dispatch("nextAction");
     },
   },

@@ -32,6 +32,8 @@ exports.setType = (file) => {
         type = 'application/javascript'
     } else if (extension === 'mp3') {
         type = 'audio/mpeg'
+    } else if (extension === 'svg') {
+        type = 'image/svg+xml'
     }
     return type
 }

@@ -1,11 +1,21 @@
 <template>
-  <div class="flex">
-    <div class="covers">
-      <Cover v-for="datum in data.dirs" :key="datum" :cover="datum"></Cover>
-    </div>
-    <div class="titles">
-      <h1>mp3 player</h1>
-      <Item v-for="datum in data.files" :key="datum.file" :item="datum"></Item>
+  <div>
+    <div class="flex">
+      <div class="covers">
+        <cover v-for="datum in data.dirs" :key="datum" :cover="datum"></cover>
+      </div>
+      <div class="titles">
+        <h1>mp3 player</h1>
+        <item
+          v-for="datum in data.files"
+          :key="datum.file"
+          :item="datum"
+          class="item"
+        ></item>
+      </div>
+      <div class="controls">
+        <controls></controls>
+      </div>
     </div>
   </div>
 </template>
@@ -13,8 +23,9 @@
 <script>
 import Cover from "./components/Cover.vue";
 import Item from "./components/Item.vue";
+import Controls from "./components/Controls.vue";
 export default {
-  components: { Cover, Item },
+  components: { Cover, Item, Controls },
   mounted() {
     this.$store.dispatch("getFirstDataAction");
   },
@@ -32,14 +43,17 @@ export default {
 }
 .covers {
   float: left;
-  width: 300px;
-  height: 100vh;
+  height: 85vh;
   overflow-x: auto;
 }
 .titles {
   width: 100%;
-  height: 100vh;
+  height: 85vh;
   background: rgb(219, 246, 255);
   text-align: center;
+}
+.controls {
+  width: 100%;
+  background: lightblue;
 }
 </style>

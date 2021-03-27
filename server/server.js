@@ -44,6 +44,7 @@ var server = http.createServer((req, res) => {
             if (error) {
                 res.writeHead(404, { 'Content-Type': 'text/html' });
                 res.write("<h1>nie znaleziono pliku<h1>");
+                console.log(req.url)
                 console.log("404")
                 res.end();
             }

@@ -7,11 +7,15 @@ Vue.use(Vuex);
 const state = {
     firstData: [],
     album: "",
+    currSong: "",
 }
 
 const getters = {
     getFirstData: function (state) {
         return state.firstData
+    },
+    getCurrSong: function (state) {
+        return state.currSong
     },
 }
 
@@ -34,12 +38,15 @@ const mutations = {
     SET_FDATA(state, firstData) {
         state.firstData = firstData
     },
-    getSongs(state, album) {
+    SET_COVER(state, album) {
         state.album = ""
         state.album = album
     },
     SET_SONGS(state, songs) {
         state.firstData.files = songs
+    },
+    SET_CURR_SONG(state, title) {
+        state.currSong = title
     }
 }
 export default new Vuex.Store({
