@@ -16,7 +16,6 @@ export default {
       imageUrl: `http://localhost:3000/${this.cover}/cover.jpg`,
     };
   },
-
   methods: {
     getSongs(cover) {
       this.$store.commit("SET_COVER", cover);

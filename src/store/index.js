@@ -1,13 +1,13 @@
 import Vuex from "vuex"
 import Vue from "vue"
 import axios from 'axios'
-
 Vue.use(Vuex);
 
 const state = {
     firstData: [],
     album: "",
-    currSong: "",
+    currSong: {},
+
 }
 
 const getters = {
@@ -45,10 +45,15 @@ const mutations = {
     SET_SONGS(state, songs) {
         state.firstData.files = songs
     },
-    SET_CURR_SONG(state, title) {
-        state.currSong = title
-    }
+    SET_CURR_SONG(state, song) {
+        state.currSong = {
+            title: song.title,
+            dir: song.dir,
+            path: `http://localhost:3000/${song.dir}/${song.title}`
+        }
+    },
 }
+
 export default new Vuex.Store({
     state,
     getters,
