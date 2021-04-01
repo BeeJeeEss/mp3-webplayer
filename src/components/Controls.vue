@@ -7,6 +7,8 @@
           <img
             src="http://localhost:3000/icons/previous.svg"
             alt="play"
+            id="prev"
+            v-on:click="change(queue, 0)"
             height="50"
             width="70"
           /><img
@@ -17,9 +19,10 @@
             height="70"
             width="90"
           /><img
+            id="next"
             src="http://localhost:3000/icons/next.svg"
             alt="play"
-            v-on:click="next(queue)"
+            v-on:click="change(queue, 1)"
             height="50"
             width="70"
           />
@@ -65,13 +68,43 @@ export default {
         audioItem.play();
       }
     },
-    next(item) {
+    change(item, direction) {
       let songs = [];
+      let playingSong = {
+        song: this.song.title,
+        dir: this.song.dir,
+      };
       item.files.forEach((element) => {
-        let queueItem = { song: element.file, dir: element.dir };
-        songs.push(queueItem);
+        if (element.file != "cover.jpg") {
+          let queueItem = { song: element.file, dir: element.dir };
+          songs.push(queueItem);
+        }
       });
-      console.log(songs);
+      songs.forEach((element) => {
+        if (element.song == playingSong.song) {
+          let currIndex = songs.indexOf(element);
+          let nextIndex = currIndex + 1;
+          let prevIndex = currIndex - 1;
+          if (direction) {
+            if (songs[nextIndex] != undefined) {
+              console.log(songs[nextIndex].song);
+              let obj = {
+                title: songs[nextIndex].song,
+                dir: songs[nextIndex].dir,
+              };
+              this.$store.commit("SET_CURR_SONG", obj);
+            }
+          } else {
+            if (songs[prevIndex] != undefined) {
+              let obj = {
+                title: songs[prevIndex].song,
+                dir: songs[prevIndex].dir,
+              };
+              this.$store.commit("SET_CURR_SONG", obj);
+            }
+          }
+        }
+      });
     },
   },
   watch: {
@@ -99,6 +132,7 @@ export default {
   margin-bottom: 15px;
   font-weight: bold;
   font-size: 1.1em;
+  width: 150px;
 }
 .icons {
   position: absolute;
@@ -113,5 +147,8 @@ audio {
 }
 img:hover {
   cursor: pointer;
+}
+.hidden {
+  visibility: hidden;
 }
 </style>

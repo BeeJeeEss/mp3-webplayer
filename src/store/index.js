@@ -11,10 +11,10 @@ const state = {
 }
 
 const getters = {
-    getFirstData: function (state) {
+    getFirstData(state) {
         return state.firstData
     },
-    getCurrSong: function (state) {
+    getCurrSong(state) {
         return state.currSong
     },
 }
