@@ -41,6 +41,7 @@ var server = http.createServer((req, res) => {
     }
     else {
         fs.readFile(__dirname + '/static' + decodeURI(req.url), function (error, data) {
+            var stats = fs.statSync(__dirname + '/static' + decodeURI(req.url));
             if (error) {
                 res.writeHead(404, { 'Content-Type': 'text/html' });
                 res.write("<h1>nie znaleziono pliku<h1>");
@@ -49,7 +50,11 @@ var server = http.createServer((req, res) => {
                 res.end();
             }
             else {
-                res.writeHead(200, { 'Content-Type': readFile.setType(req.url) });
+                res.writeHead(200, {
+                    'Content-Type': readFile.setType(req.url),
+                    "Content-Length": stats.size,
+                    "Accept-Ranges": "bytes"
+                });
                 res.write(data);
                 res.end();
             }

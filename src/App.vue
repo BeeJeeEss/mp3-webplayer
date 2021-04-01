@@ -6,12 +6,13 @@
       </div>
       <div class="titles">
         <h1>mp3 player</h1>
-        <item
-          v-for="datum in data.files"
-          :key="datum.file"
-          :item="datum"
-          class="item"
-        ></item>
+        <div class="item">
+          <item
+            v-for="datum in data.files"
+            :key="datum.file"
+            :item="datum"
+          ></item>
+        </div>
       </div>
       <div class="controls">
         <controls></controls>
@@ -52,8 +53,17 @@ export default {
   background: rgb(219, 246, 255);
   text-align: center;
 }
+.item {
+  height: 80vh;
+  overflow-x: auto;
+}
 .controls {
   width: 100%;
   background: lightblue;
+}
+</style>
+<style>
+body {
+  overflow: hidden;
 }
 </style>
