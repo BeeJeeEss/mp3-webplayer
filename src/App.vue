@@ -5,8 +5,16 @@
         <cover v-for="datum in data.dirs" :key="datum" :cover="datum"></cover>
       </div>
       <div class="titles">
-        <h1>mp3 player</h1>
+        <h1>{{ header }}</h1>
         <div class="item">
+          <img
+            @click="playlist()"
+            id="img"
+            :src="src"
+            width="32"
+            height="32"
+            alt=""
+          />
           <item
             v-for="datum in data.files"
             :key="datum.file"
@@ -34,13 +42,43 @@ export default {
     data() {
       return this.$store.getters.getFirstData;
     },
+    src() {
+      return this.$store.getters.getPlaySrc;
+    },
+    header() {
+      return this.$store.getters.getHeader;
+    },
+  },
+  methods: {
+    playlist() {
+      if (!this.$store.getters.getIn) {
+        this.$store.dispatch("getPlaylistAction");
+        this.$store.commit("SET_IN", true);
+        this.$store.commit("SET_SRC", "http://localhost:3000/icons/close.svg");
+        this.$store.commit("SET_HEADER", "playlist");
+      } else {
+        this.$store.dispatch("getFirstDataAction");
+        this.$store.commit("SET_IN", false);
+        this.$store.commit(
+          "SET_SRC",
+          "http://localhost:3000/icons/playlist.svg"
+        );
+        this.$store.commit("SET_HEADER", "mp3 player");
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
 * {
-  margin: 0 !important;
+  margin: 0;
+}
+img {
+  margin-top: 10px !important;
+}
+img:hover {
+  cursor: pointer;
 }
 .covers {
   float: left;

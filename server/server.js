@@ -1,6 +1,12 @@
 var http = require("http");
 var fs = require("fs");
 var readFile = require("./modules/setType.js")
+var Datastore = require('nedb')
+
+var playlist = new Datastore({
+    filename: 'db/playlist.db',
+    autoload: true
+});
 var server = http.createServer((req, res) => {
     if (req.url == '/first') {
         var obj = { dirs: [], files: [] }
@@ -27,7 +33,7 @@ var server = http.createServer((req, res) => {
         const myUrl = new URL(`http://localhost:3000${req.url}`)
         let album = myUrl.searchParams.get('album')
         let obj = { files: [] }
-        fs.readdir(__dirname + '/static/' + album, function (err, files) {
+        fs.readdir(__dirname + '/static/' + album, (err, files) => {
             if (err) {
                 return console.log(err);
             }
@@ -38,9 +44,19 @@ var server = http.createServer((req, res) => {
             res.setHeader("Access-Control-Allow-Origin", "*");
             res.end(JSON.stringify(obj.files))
         });
+    } else if (req.url.includes('add?song=')) {
+        const myUrl = new URL(`http://localhost:3000${req.url}`)
+        let song = myUrl.searchParams.get('song')
+        song = JSON.parse(song)
+        playlist.insert(song)
+    } else if (req.url === '/playlist') {
+        playlist.find({}, function (err, docs) {
+            res.setHeader("Access-Control-Allow-Origin", "*");
+            res.end(JSON.stringify(docs))
+        });
     }
     else {
-        fs.readFile(__dirname + '/static' + decodeURI(req.url), function (error, data) {
+        fs.readFile(__dirname + '/static' + decodeURI(req.url), (error, data) => {
             var stats = fs.statSync(__dirname + '/static' + decodeURI(req.url));
             if (error) {
                 res.writeHead(404, { 'Content-Type': 'text/html' });
@@ -60,6 +76,17 @@ var server = http.createServer((req, res) => {
             }
         })
     }
+
+
+
+
+
+
+
+
+
+
+
 })
 server.listen(3000, () => {
     console.log("serwer startuje na porcie 3000")
