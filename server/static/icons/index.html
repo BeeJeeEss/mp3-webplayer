@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inconsolata', monospace;
+        }
+
+        h1 {
+            color: blue;
+        }
+
+        #drop {
+            height: 30vh;
+            background-color: lightblue;
+            display: flex;
+            align-items: center;
+            color: gray;
+            font-weight: bold;
+            justify-content: center;
+            font-size: 2em;
+            border: 20px solid rgb(196, 229, 240);
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        #info2 {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="drop">Tutaj upuść pliki</div>
+    <div class="flex">
+        <div id="info"></div>
+        <div id="info2"></div>
+    </div>
+
+
+    <script>
+        let drop = document.getElementById('drop')
+        document.querySelector("html").ondragover = (e) => {
+            drop.innerText = "Tutaj upuść pliki"
+            e.preventDefault();
+            e.stopPropagation();
+            drop.ondragover = e => {
+                drop.setAttribute('style', 'border:20px solid rgb(90, 206, 245); color:black;')
+                drop.ondrop = e => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    console.log(files)
+                    var fd = new FormData();
+                    var files = e.dataTransfer.files;
+                    console.log(files)
+                    let info = "<b>Zuploudowano następujące pliki: </b> </br>"
+                    for (let i = 0; i < files.length; i++) {
+                        info += files[i].name + "<br>"
+                    }
+                    document.getElementById('info').innerHTML = info
+
+                    $.each(files, function (i, file) {
+                        fd.append('file', file);
+                    });
+
+                    $.ajax({
+                        url: '/upload',
+                        type: 'POST',
+                        data: fd,
+                        contentType: false, // ajax nie określa typu przesyłanych danych
+                        processData: false, // ajax w żaden sposób nie przetwarza danych
+                        success: function (response) {
+                            let back = document.getElementById('info2')
+                            let info = "<b>Nazwy zapisanych plików: </b> <br>"
+                            let resp = JSON.parse(response)
+                            resp.arr.forEach(element => {
+                                info += element + "<br>"
+                            });
+                            back.innerHTML = info
+                        },
+
+                    })
+                }
+            }
+            drop.ondragleave = e => {
+                drop.setAttribute('style', 'border:20px solid rgb(196, 229, 240); color:gray;')
+            }
+        }
+    </script>
+</body>
+
+</html>

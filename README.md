@@ -1,8 +1,5 @@
 # MP3 webplayer
-# NOT FINISHED YET
-It's just a simple software which allowes you to play songs you have downloaded and saved in folder below 
-
-`./server/static/`
+It's just a simple app which allowes you to play songs you have uploaded already by address: http://localhost:3000/admin
 
 ## an instruction
 Well prepared directory with mp3 files should contain an image named `cover.jpg` - it's gonna be an album cover, displayed on the left side of the app.
