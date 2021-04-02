@@ -6,6 +6,9 @@ exports.setType = (file) => {
         case 'jpg':
             type = 'image/jpg'
             break;
+        case 'html':
+            type = 'text/html'
+            break;
         case 'png':
             type = 'image/png'
             break;
@@ -22,7 +25,7 @@ exports.setType = (file) => {
             type = 'image/svg+xml'
             break;
         default:
-            console.log('Error: unknown extension in file ' + file)
+            console.log(`Error: unknown extension ${extension} in request ${file}`)
             break;
     }
     return type
