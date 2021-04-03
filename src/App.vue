@@ -100,8 +100,3 @@ img:hover {
   background: lightblue;
 }
 </style>
-<style>
-body {
-  overflow: hidden;
-}
-</style>

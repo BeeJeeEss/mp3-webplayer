@@ -7,7 +7,9 @@ var playlist = new Datastore({
     filename: 'db/playlist.db',
     autoload: true
 });
+
 var server = http.createServer((req, res) => {
+    console.log(req.url)
     switch (req.method) {
         case 'GET':
             if (req.url == '/first') {
@@ -59,7 +61,6 @@ var server = http.createServer((req, res) => {
             }
             else if (req.url === '/admin') {
                 fs.readFile(__dirname + '/static/icons/index.html', (error, data) => {
-
                     if (error) {
                         res.writeHead(404, { 'Content-Type': 'text/html' });
                         res.write("<h1>nie znaleziono pliku<h1>");
@@ -70,7 +71,6 @@ var server = http.createServer((req, res) => {
                     else {
                         res.writeHead(200, {
                             'Content-Type': readFile.setType(req.url),
-
                         });
                         res.write(data);
                         res.end();
@@ -79,22 +79,42 @@ var server = http.createServer((req, res) => {
             }
             else {
                 fs.readFile(__dirname + '/static' + decodeURI(req.url), (error, data) => {
-                    var stats = fs.statSync(__dirname + '/static' + decodeURI(req.url));
-                    if (error) {
-                        res.writeHead(404, { 'Content-Type': 'text/html' });
-                        res.write("<h1>nie znaleziono pliku<h1>");
-                        console.log(req.url)
-                        console.log("404")
-                        res.end();
-                    }
-                    else {
-                        res.writeHead(200, {
-                            'Content-Type': readFile.setType(req.url),
-                            "Content-Length": stats.size,
-                            "Accept-Ranges": "bytes"
-                        });
-                        res.write(data);
-                        res.end();
+                    if (fs.existsSync(__dirname + '/static' + decodeURI(req.url))) {
+                        var stats = fs.statSync(__dirname + '/static' + decodeURI(req.url));
+                        if (error) {
+                            res.writeHead(404, { 'Content-Type': 'text/html' });
+                            res.write("<h1>nie znaleziono pliku<h1>");
+                            console.log(req.url)
+                            console.log("404")
+                            res.end();
+                        }
+                        else {
+                            res.writeHead(200, {
+                                'Content-Type': readFile.setType(req.url),
+                                "Content-Length": stats.size,
+                                "Accept-Ranges": "bytes"
+                            });
+                            res.write(data);
+                            res.end();
+                        }
+                    } else {
+                        fs.readFile(__dirname + '/static/icons/cover.jpg', (error, data) => {
+                            if (error) {
+                                res.writeHead(404, { 'Content-Type': 'text/html' });
+                                res.write("<h1>nie znaleziono pliku<h1>");
+                                console.log(req.url)
+                                console.log("404")
+                                res.end();
+                            }
+                            else {
+                                res.writeHead(200, {
+                                    'Content-Type': readFile.setType(req.url),
+                                    "Accept-Ranges": "bytes"
+                                });
+                                res.write(data);
+                                res.end();
+                            }
+                        })
                     }
                 })
             }
