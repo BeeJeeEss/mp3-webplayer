@@ -154,18 +154,6 @@ var server = http.createServer((req, res) => {
             });
             break;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 })
 server.listen(3000, () => {
     console.log("serwer startuje na porcie 3000")
